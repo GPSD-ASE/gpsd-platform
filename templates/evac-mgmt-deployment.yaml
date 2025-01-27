@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gpsd-evac-mgmt
-  namespace: gpsd
+  name: {{ .Values.deployments.evacMgmt.name | default "gpsd-evac-mgmt" }}
+  namespace: {{ .Values.global.namespace }}
   labels:
-    app: gpsd-evac-mgmt
+    app: {{ .Values.deployments.evacMgmt.name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.deployments.evacMgmt.replicas }}
   selector:
     matchLabels:
       app: gpsd-evac-mgmt
@@ -17,25 +17,26 @@ spec:
     spec:
       containers:
       - name: gpsd-evac-mgmt
-        image: gpsd/gpsd-evac-mgmt:v1
-        imagePullPolicy: Always
+        image: "{{ .Values.deployments.evacMgmt.image.repository }}:{{ .Values.deployments.evacMgmt.image.tag }}"
+        imagePullPolicy: {{ .Values.deployments.evacMgmt.image.pullPolicy }}
         ports:
-        - containerPort: 8000
+        - containerPort: {{ .Values.deployments.evacMgmt.port }}
         env:
         - name: NODE_ENV
-          value: "staging"
+          value: "{{ .Values.deployments.evacMgmt.environment.NODE_ENV }}"
         - name: GPSD_EVAC_MGMT_PORT
-          value: "8000"
+          value: "{{ .Values.deployments.evacMgmt.environment.PORT }}"
         livenessProbe:
           httpGet:
-            path: /api/evacuation/health
-            port: 8000
-          initialDelaySeconds: 3
-          periodSeconds: 10
+            path: {{ .Values.deployments.evacMgmt.livenessProbe.httpGet.path }}
+            port: {{ .Values.deployments.evacMgmt.port }}
+          initialDelaySeconds: {{ .Values.deployments.evacMgmt.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployments.evacMgmt.livenessProbe.periodSeconds }}
         readinessProbe:
           httpGet:
-            path: /api/evacuation/health
-            port: 8000
-          initialDelaySeconds: 3
-          periodSeconds: 10
+            path: {{ .Values.deployments.evacMgmt.readinessProbe.httpGet.path }}
+            port: {{ .Values.deployments.evacMgmt.port }}
+          initialDelaySeconds: {{ .Values.deployments.evacMgmt.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployments.evacMgmt.readinessProbe.periodSeconds }}
+    
 
