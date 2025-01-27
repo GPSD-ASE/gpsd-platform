@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpsd-user-mgmt
+  namespace: gpsd
+  labels:
+    app: gpsd-user-mgmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpsd-user-mgmt
+  template:
+    metadata:
+      labels:
+        app: gpsd-user-mgmt
+    spec:
+      containers:
+      - name: gpsd-user-mgmt
+        image: gpsd/gpsd-user-mgmt:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5500
+        env:
+        - name: NODE_ENV
+          value: "staging"
+        - name: GPSD_USER_MGMT_PORT
+          value: "5500"
+        livenessProbe:
+          httpGet:
+            path: /api/user/health
+            port: 5500
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/user/health
+            port: 5500
+          initialDelaySeconds: 3
+          periodSeconds: 10
+

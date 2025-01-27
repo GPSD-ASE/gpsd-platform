@@ -1,0 +1,346 @@
+# Default values for gpsd.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+global:
+  namespace: gpsd
+  imagePullPolicy: Always
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+
+deployments:
+  nginx:
+    replicas: 1
+    image:
+      repository: paranjik/gpsd-nginx
+      tag: latest
+      pullPolicy: Always
+    environment:
+      NODE_ENV: "staging"
+    volumes:
+      configMapName: gpsd-nginx-config
+      certsSecretName: gpsd-api-gateway-certificates
+      certs:
+        - key: tls.crt
+          path: api.gpsd.com.crt
+        - key: tls.key
+          path: api.gpsd.com.key
+
+  apiGateway:
+    replicas: 1
+    image:
+      repository: paranjik/gpsd-api-gateway
+      tag: latest
+      pullPolicy: Always
+    port: 3000
+    environment:
+      NODE_ENV: "staging"
+      PORT: 3000
+      secrets:
+        JWT_SECRET: gpsd-api-gateway-secrets
+        REFRESH_SECRET: gpsd-api-gateway-secrets
+    livenessProbe:
+      httpGet:
+        path: /api/gateway/health
+        port: 3000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /api/gateway/ready
+        port: 3000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+
+  mapMgmt:
+    replicas: 1
+    image:
+      repository: gpsd/gpsd-map-mgmt
+      tag: v1
+      pullPolicy: Always
+    environment:
+      NODE_ENV: "staging"
+      PORT: 7000
+    livenessProbe:
+      httpGet:
+        path: /api/map/health
+        port: 7000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /api/map/ready
+        port: 7000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+
+  evacMgmt:
+    replicas: 1
+    image:
+      repository: gpsd/gpsd-evac-mgmt
+      tag: v1
+      pullPolicy: Always
+    environment:
+      NODE_ENV: "staging"
+      PORT: 8000
+    livenessProbe:
+      httpGet:
+        path: /api/evac/health
+        port: 8000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /api/evac/ready
+        port: 8000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+
+  incidentMgmt:
+    replicas: 1
+    image:
+      repository: gpsd/gpsd-incident-mgmt
+      tag: v1
+      pullPolicy: Always
+    environment:
+      NODE_ENV: "staging"
+      PORT: 9000
+    livenessProbe:
+      httpGet:
+        path: /api/incident/health
+        port: 9000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /api/incident/ready
+        port: 9000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+
+  sensorMgmt:
+    replicas: 1
+    image:
+      repository: gpsd/gpsd-sensor-mgmt
+      tag: v1
+      pullPolicy: Always
+    environment:
+      NODE_ENV: "staging"
+      PORT: 6000
+    livenessProbe:
+      httpGet:
+        path: /api/sensor/health
+        port: 6000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /api/sensor/ready
+        port: 6000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+
+  userMgmt:
+    replicas: 1
+    image:
+      repository: gpsd/gpsd-user-mgmt
+      tag: v1
+      pullPolicy: Always
+    environment:
+      NODE_ENV: "staging"
+      PORT: 5500
+    livenessProbe:
+      httpGet:
+        path: /api/user/health
+        port: 5500
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /api/user/ready
+        port: 5500
+      initialDelaySeconds: 3
+      periodSeconds: 10
+
+  # notificationMgmt:
+  #   replicas: 1
+  #   image:
+  #     repository: gpsd/gpsd-notif-mgmt
+  #     tag: v1
+  #     pullPolicy: Always
+  #   environment:
+  #     NODE_ENV: "staging"
+  #     PORT: 5400
+
+  # redisServer:
+  #   replicas: 1
+  #   image:
+  #     repository: redis
+  #     tag: latest
+  #     pullPolicy: Always
+
+services:
+  apiGateway:
+    name: gpsd-api-gateway
+    type: NodePort
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 3000
+        nodePort: 30001
+    selector:
+      app: gpsd-api-gateway
+
+  nginx:
+    name: gpsd-nginx
+    type: ClusterIP
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 80
+      - name: https
+        protocol: TCP
+        port: 443
+        targetPort: 443
+    selector:
+      app: gpsd-nginx
+
+  mapMgmt:
+    name: gpsd-map-mgmt
+    type: NodePort
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 7000
+        nodePort: 30070
+    selector:
+      app: gpsd-map-mgmt
+
+  userMgmt:
+    name: gpsd-user-mgmt
+    type: NodePort
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 5500
+        nodePort: 30055
+    selector:
+      app: gpsd-user-mgmt
+
+  sensorMgmt:
+    name: gpsd-sensor-mgmt
+    type: NodePort
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 6000
+        nodePort: 30060
+    selector:
+      app: gpsd-sensor-mgmt
+
+  evacMgmt:
+    name: gpsd-evac-mgmt
+    type: NodePort
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 8000
+        nodePort: 30010
+    selector:
+      app: gpsd-evac-mgmt
+
+  incidentMgmt:
+    name: gpsd-incident-mgmt
+    type: NodePort
+    ports:
+      - name: http
+        protocol: TCP
+        port: 80
+        targetPort: 9000
+        nodePort: 30090
+    selector:
+      app: gpsd-incident-mgmt
+
+podAnnotations: {}
+
+podLabels: {}
+
+podSecurityContext: {}
+  fsGroup: 2000
+
+securityContext: {}
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  # targetMemoryUtilizationPercentage: 80
+
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpsd-api-gateway
+  namespace: gpsd
+  labels:
+    app: gpsd-api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpsd-api-gateway
+  template:
+    metadata:
+      labels:
+        app: gpsd-api-gateway
+    spec:
+      containers:
+      - name: gpsd-api-gateway
+        image: paranjik/gpsd-api-gateway:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "staging"
+        - name: GPSD_API_GATEWAY_PORT
+          value: "3000"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: gpsd-api-gateway-secrets
+              key: JWT_SECRET
+        - name: REFRESH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: gpsd-api-gateway-secrets
+              key: REFRESH_SECRET
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: {{ .Values.apiGateway.name | default "gpsd-api-gateway" }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.deployments.apiGateway.name }}
+spec:
+  replicas: {{ .Values.deployments.apiGateway.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployments.apiGateway.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployments.apiGateway.name }}
+    spec:
+      containers:
+      - name: {{ .Values.deployments.apiGateway.name }}
+        image: {{ .Values.deployments.apiGateway.image }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.deployments.apiGateway.port }}
+        env:
+        - name: NODE_ENV
+          value: {{ .Values.deployments.apiGateway.environment.NODE_ENV }}
+        - name: GPSD_API_GATEWAY_PORT
+          value: {{ .Values.deployments.apiGateway.environment.PORT }}

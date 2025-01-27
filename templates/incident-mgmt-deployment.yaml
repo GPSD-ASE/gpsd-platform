@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpsd-incident-mgmt
+  namespace: gpsd
+  labels:
+    app: gpsd-incident-mgmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpsd-incident-mgmt
+  template:
+    metadata:
+      labels:
+        app: gpsd-incident-mgmt
+    spec:
+      containers:
+      - name: gpsd-incident-mgmt
+        image: gpsd/gpsd-incident-mgmt:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+        env:
+        - name: NODE_ENV
+          value: "staging"
+        - name: GPSD_INCIDENT_MGMT_PORT
+          value: "9000"
+        livenessProbe:
+          httpGet:
+            path: /api/incident/health
+            port: 9000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/incident/health
+            port: 9000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+

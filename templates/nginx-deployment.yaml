@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpsd-nginx
+  namespace: gpsd
+  labels:
+    app: gpsd-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpsd-nginx
+  template:
+    metadata:
+      labels:
+        app: gpsd-nginx
+    spec:
+      containers:
+      - name: gpsd-nginx
+        image: paranjik/gpsd-nginx:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: certs
+          mountPath: /etc/nginx/certs
+          readOnly: true
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: gpsd-nginx-config
+        - name: certs
+          secret:
+            secretName: gpsd-api-gateway-certificates
+            items:
+              - key: tls.crt
+                path: api.gpsd.com.crt
+              - key: tls.key
+                path: api.gpsd.com.key

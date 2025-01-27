@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpsd-sensor-mgmt
+  namespace: gpsd
+  labels:
+    app: gpsd-sensor-mgmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpsd-sensor-mgmt
+  template:
+    metadata:
+      labels:
+        app: gpsd-sensor-mgmt
+    spec:
+      containers:
+      - name: gpsd-sensor-mgmt
+        image: gpsd/gpsd-sensor-mgmt:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6000
+        env:
+        - name: NODE_ENV
+          value: "staging"
+        - name: GPSD_SENSOR_MGMT_PORT
+          value: "6000"
+        livenessProbe:
+          httpGet:
+            path: /api/sensor/health
+            port: 6000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/sensor/health
+            port: 6000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+

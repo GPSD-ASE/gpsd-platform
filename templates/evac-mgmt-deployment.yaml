@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpsd-evac-mgmt
+  namespace: gpsd
+  labels:
+    app: gpsd-evac-mgmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpsd-evac-mgmt
+  template:
+    metadata:
+      labels:
+        app: gpsd-evac-mgmt
+    spec:
+      containers:
+      - name: gpsd-evac-mgmt
+        image: gpsd/gpsd-evac-mgmt:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: NODE_ENV
+          value: "staging"
+        - name: GPSD_EVAC_MGMT_PORT
+          value: "8000"
+        livenessProbe:
+          httpGet:
+            path: /api/evacuation/health
+            port: 8000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/evacuation/health
+            port: 8000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+

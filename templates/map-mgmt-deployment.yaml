@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpsd-map-mgmt
+  namespace: gpsd
+  labels:
+    app: gpsd-map-mgmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpsd-map-mgmt
+  template:
+    metadata:
+      labels:
+        app: gpsd-map-mgmt
+    spec:
+      containers:
+      - name: gpsd-map-mgmt
+        image: gpsd/gpsd-map-mgmt:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7000
+        env:
+        - name: NODE_ENV
+          value: "staging"
+        - name: GPSD_MAP_MGMT_PORT
+          value: "7000"
+        livenessProbe:
+          httpGet:
+            path: /api/map/health
+            port: 7000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/map/health
+            port: 7000
+          initialDelaySeconds: 3
+          periodSeconds: 10
+
