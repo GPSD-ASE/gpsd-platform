@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gpsd-api-gateway
-  namespace: gpsd
+name: {{ .Values.apiGateway.name | default "gpsd-api-gateway" }}
+  namespace: {{ .Values.global.namespace }}
   labels:
-    app: gpsd-api-gateway
+    app: {{ .Values.deployments.apiGateway.name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.apiGateway.replicas }}
   selector:
     matchLabels:
       app: gpsd-api-gateway
@@ -17,51 +17,35 @@ spec:
     spec:
       containers:
       - name: gpsd-api-gateway
-        image: paranjik/gpsd-api-gateway:latest
-        imagePullPolicy: Always
+        image: "{{ .Values.apiGateway.image.repository }}:{{ .Values.apiGateway.image.tag }}"
+        imagePullPolicy: {{ .Values.apiGateway.image.pullPolicy }}
         ports:
-        - containerPort: 3000
+        - containerPort: {{ .Values.apiGateway.port }}
         env:
         - name: NODE_ENV
-          value: "staging"
+          value: "{{ .Values.apiGateway.environment.NODE_ENV }}"
         - name: GPSD_API_GATEWAY_PORT
-          value: "3000"
+          value: "{{ .Values.apiGateway.environment.PORT }}"
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: gpsd-api-gateway-secrets
+              name: {{ .Values.apiGateway.environment.secrets.JWT_SECRET }}
               key: JWT_SECRET
         - name: REFRESH_SECRET
           valueFrom:
             secretKeyRef:
-              name: gpsd-api-gateway-secrets
+              name: {{ .Values.apiGateway.environment.secrets.REFRESH_SECRET }}
               key: REFRESH_SECRET
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-name: {{ .Values.apiGateway.name | default "gpsd-api-gateway" }}
-  namespace: {{ .Values.global.namespace }}
-  labels:
-    app: {{ .Values.deployments.apiGateway.name }}
-spec:
-  replicas: {{ .Values.deployments.apiGateway.replicas }}
-  selector:
-    matchLabels:
-      app: {{ .Values.deployments.apiGateway.name }}
-  template:
-    metadata:
-      labels:
-        app: {{ .Values.deployments.apiGateway.name }}
-    spec:
-      containers:
-      - name: {{ .Values.deployments.apiGateway.name }}
-        image: {{ .Values.deployments.apiGateway.image }}
-        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
-        ports:
-        - containerPort: {{ .Values.deployments.apiGateway.port }}
-        env:
-        - name: NODE_ENV
-          value: {{ .Values.deployments.apiGateway.environment.NODE_ENV }}
-        - name: GPSD_API_GATEWAY_PORT
-          value: {{ .Values.deployments.apiGateway.environment.PORT }}
+      livenessProbe:
+        httpGet:
+          path: {{ .Values.apiGateway.livenessProbe.httpGet.path }}
+          port: {{ .Values.apiGateway.port }}
+        initialDelaySeconds: {{ .Values.apiGateway.livenessProbe.initialDelaySeconds }}
+        periodSeconds: {{ .Values.apiGateway.livenessProbe.periodSeconds }}
+      readinessProbe:
+        httpGet:
+          path: {{ .Values.apiGateway.readinessProbe.httpGet.path }}
+          port: {{ .Values.apiGateway.port }}
+        initialDelaySeconds: {{ .Values.apiGateway.readinessProbe.initialDelaySeconds }}
+        periodSeconds: {{ .Values.apiGateway.readinessProbe.periodSeconds }}
+  
