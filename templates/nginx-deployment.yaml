@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gpsd-nginx
-  namespace: gpsd
+  name: {{ .Values.deployments.nginx.name | default "gpsd-nginx" }}
+  namespace: {{ .Values.global.namespace }}
   labels:
-    app: gpsd-nginx
+    app: {{ .Values.deployments.nginx.name | default "gpsd-nginx" }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.deployments.nginx.replicas }}
   selector:
     matchLabels:
       app: gpsd-nginx
@@ -17,11 +17,12 @@ spec:
     spec:
       containers:
       - name: gpsd-nginx
-        image: paranjik/gpsd-nginx:latest
-        imagePullPolicy: Always
+        image: "{{ .Values.deployments.nginx.image.repository }}:{{ .Values.deployments.nginx.image.tag }}"
+        imagePullPolicy: {{ .Values.deployments.nginx.image.pullPolicy }}
         ports:
-        - containerPort: 80
-        - containerPort: 443
+        {{- range .Values.deployments.nginx.ports }}
+        - containerPort: {{ .port }}
+        {{- end }}
         volumeMounts:
         - name: nginx-config
           mountPath: /etc/nginx/nginx.conf
@@ -32,12 +33,12 @@ spec:
       volumes:
         - name: nginx-config
           configMap:
-            name: gpsd-nginx-config
+            name: {{ .Values.deployments.nginx.volumes.configMapName }}
         - name: certs
           secret:
-            secretName: gpsd-api-gateway-certificates
+            secretName: {{ .Values.deployments.nginx.volumes.certsSecretName }}
             items:
-              - key: tls.crt
-                path: api.gpsd.com.crt
-              - key: tls.key
-                path: api.gpsd.com.key
+            {{- range .Values.deployments.nginx.volumes.certs }}
+              - key: {{ .key }}
+                path: {{ .path }}
+            {{- end }}

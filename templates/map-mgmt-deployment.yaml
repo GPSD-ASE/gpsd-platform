@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: {{ .Values.deployments.mapMgmt.name | default "gpsd-map-mgmt" }}
-namespace: {{ .Values.global.namespace }}
-labels:
-app: {{ .Values.deployments.mapMgmt.name }}
+  name: {{ .Values.deployments.mapMgmt.name | default "gpsd-map-mgmt" }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.deployments.mapMgmt.name }}
 spec:
-replicas: {{ .Values.deployments.mapMgmt.replicas }}
-selector:
+  replicas: {{ .Values.deployments.mapMgmt.replicas }}
+  selector:
     matchLabels:
       app: gpsd-map-mgmt
   template:
@@ -26,14 +26,14 @@ selector:
           value: "{{ .Values.deployments.mapMgmt.environment.NODE_ENV }}"
         - name: GPSD_MAP_MGMT_PORT
           value: "{{ .Values.deployments.mapMgmt.environment.PORT }}"
-        livenessProbe:
-          httpGet:
+      livenessProbe:
+        httpGet:
           path: {{ .Values.deployments.mapMgmt.livenessProbe.httpGet.path }}
           port: {{ .Values.deployments.mapMgmt.port }}
           initialDelaySeconds: {{ .Values.deployments.mapMgmt.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.deployments.mapMgmt.livenessProbe.periodSeconds }}
-        readinessProbe:
-          httpGet:
+      readinessProbe:
+        httpGet:
           path: {{ .Values.deployments.mapMgmt.readinessProbe.httpGet.path }}
           port: {{ .Values.deployments.mapMgmt.port }}
           initialDelaySeconds: {{ .Values.deployments.mapMgmt.readinessProbe.initialDelaySeconds }}

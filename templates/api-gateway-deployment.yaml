@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: {{ .Values.deployments.apiGateway.name | default "gpsd-api-gateway" }}
+  name: {{ .Values.deployments.apiGateway.name | default "gpsd-api-gateway" }}
   namespace: {{ .Values.global.namespace }}
   labels:
     app: {{ .Values.deployments.apiGateway.name }}
@@ -30,12 +30,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.deployments.apiGateway.environment.secrets.JWT_SECRET }}
-              key: {{ .Values.deployments.apiGateway.secrets.keys.JWT_SECRET }}
+              key: {{ .Values.deployments.apiGateway.keys.JWT_SECRET }}
         - name: REFRESH_SECRET
           valueFrom:
             secretKeyRef:
               name: {{ .Values.deployments.apiGateway.environment.secrets.REFRESH_SECRET }}
-              key: {{ .Values.deployments.apiGateway.secrets.keys.REFRESH_SECRET }}
+              key: {{ .Values.deployments.apiGateway.keys.REFRESH_SECRET }}
       livenessProbe:
         httpGet:
           path: {{ .Values.deployments.apiGateway.livenessProbe.httpGet.path }}

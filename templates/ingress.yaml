@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "gpsd.fullname" . }}
+  name: {{ include "gpsd.global.fullname" . }}
   labels:
     {{- include "gpsd.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "gpsd.fullname" $ }}
+                name: {{ include "gpsd.global.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

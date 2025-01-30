@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "gpsd.fullname" -}}
+{{- define "gpsd.global.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -55,7 +55,7 @@ Create the name of the service account to use
 */}}
 {{- define "gpsd.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "gpsd.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "gpsd.global.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

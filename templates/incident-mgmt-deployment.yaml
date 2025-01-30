@@ -23,19 +23,18 @@ spec:
         - containerPort: {{ .Values.deployments.incidentMgmt.port }}
         env:
         - name: NODE_ENV
-        value: "{{ .Values.deployments.incidentMgmt.environment.NODE_ENV }}"
+          value: "{{ .Values.deployments.incidentMgmt.environment.NODE_ENV }}"
         - name: GPSD_INCIDENT_MGMT_PORT
-        value: "{{ .Values.deployments.incidentMgmt.environment.PORT }}"
-        livenessProbe:
-          httpGet:
+          value: "{{ .Values.deployments.incidentMgmt.environment.PORT }}"
+      livenessProbe:
+        httpGet:
           path: {{ .Values.deployments.incidentMgmt.livenessProbe.httpGet.path }}
           port: {{ .Values.deployments.incidentMgmt.port }}
           initialDelaySeconds: {{ .Values.deployments.incidentMgmt.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.deployments.incidentMgmt.livenessProbe.periodSeconds }}
-        readinessProbe:
-          httpGet:
+      readinessProbe:
+        httpGet:
           path: {{ .Values.deployments.incidentMgmt.readinessProbe.httpGet.path }}
           port: {{ .Values.deployments.incidentMgmt.port }}
           initialDelaySeconds: {{ .Values.deployments.incidentMgmt.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.deployments.incidentMgmt.readinessProbe.periodSeconds }}
-

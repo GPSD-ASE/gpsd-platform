@@ -8,6 +8,7 @@ global:
   imagePullPolicy: Always
   imagePullSecrets: []
   nameOverride: ""
+  fullName: gpsd
   fullnameOverride: ""
 
 deployments:
@@ -27,6 +28,9 @@ deployments:
           path: api.gpsd.com.crt
         - key: tls.key
           path: api.gpsd.com.key
+    ports:
+      - port: 80
+      - port: 443
 
   apiGateway:
     replicas: 1
@@ -41,9 +45,9 @@ deployments:
       secrets:
         JWT_SECRET: gpsd-api-gateway-secrets
         REFRESH_SECRET: gpsd-api-gateway-secrets
-        keys:
-          JWT_SECRET: jwt-secret-key
-          REFRESH_SECRET: refresh-secret-key
+    keys:
+      JWT_SECRET: jwt-secret-key
+      REFRESH_SECRET: refresh-secret-key
     livenessProbe:
       httpGet:
         path: /api/gateway/health
@@ -63,6 +67,7 @@ deployments:
       repository: gpsd/gpsd-map-mgmt
       tag: v1
       pullPolicy: Always
+    port: 7000
     environment:
       NODE_ENV: "staging"
       PORT: 7000
@@ -85,6 +90,7 @@ deployments:
       repository: gpsd/gpsd-evac-mgmt
       tag: v1
       pullPolicy: Always
+    port: 8000
     environment:
       NODE_ENV: "staging"
       PORT: 8000
@@ -107,6 +113,7 @@ deployments:
       repository: gpsd/gpsd-incident-mgmt
       tag: v1
       pullPolicy: Always
+    port: 9000
     environment:
       NODE_ENV: "staging"
       PORT: 9000
@@ -129,6 +136,7 @@ deployments:
       repository: gpsd/gpsd-sensor-mgmt
       tag: v1
       pullPolicy: Always
+    port: 6000
     environment:
       NODE_ENV: "staging"
       PORT: 6000
@@ -151,6 +159,7 @@ deployments:
       repository: gpsd/gpsd-user-mgmt
       tag: v1
       pullPolicy: Always
+    port: 5500
     environment:
       NODE_ENV: "staging"
       PORT: 5500
@@ -271,6 +280,11 @@ services:
         nodePort: 30090
     selector:
       app: gpsd-incident-mgmt
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
 
 podAnnotations: {}
 

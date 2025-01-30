@@ -26,15 +26,15 @@ spec:
           value: "{{ .Values.deployments.sensorMgmt.environment.NODE_ENV }}"
         - name: GPSD_SENSOR_MGMT_PORT
           value: "{{ .Values.deployments.sensorMgmt.environment.PORT }}"
-        livenessProbe:
-          httpGet:
-            path: {{ .Values.deployments.sensorMgmt.livenessProbe.httpGet.path }}
-            port: {{ .Values.deployments.sensorMgmt.port }}
-            initialDelaySeconds: {{ .Values.deployments.sensorMgmt.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployments.sensorMgmt.livenessProbe.periodSeconds }}
-        readinessProbe:
-          httpGet:
-            path: {{ .Values.deployments.sensorMgmt.readinessProbe.httpGet.path }}
-            port: {{ .Values.deployments.sensorMgmt.port }}
-            initialDelaySeconds: {{ .Values.deployments.sensorMgmt.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployments.sensorMgmt.readinessProbe.periodSeconds }}
+      livenessProbe:
+        httpGet:
+          path: {{ .Values.deployments.sensorMgmt.livenessProbe.httpGet.path }}
+          port: {{ .Values.deployments.sensorMgmt.port }}
+          initialDelaySeconds: {{ .Values.deployments.sensorMgmt.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployments.sensorMgmt.livenessProbe.periodSeconds }}
+      readinessProbe:
+        httpGet:
+          path: {{ .Values.deployments.sensorMgmt.readinessProbe.httpGet.path }}
+          port: {{ .Values.deployments.sensorMgmt.port }}
+          initialDelaySeconds: {{ .Values.deployments.sensorMgmt.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployments.sensorMgmt.readinessProbe.periodSeconds }}

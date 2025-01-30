@@ -7,7 +7,7 @@ metadata:
     app: {{ .Values.deployments.userMgmt.name }}
 spec:
   replicas: {{ .Values.deployments.userMgmt.replicas }}
-selector:
+  selector:
     matchLabels:
       app: gpsd-user-mgmt
   template:
@@ -26,15 +26,15 @@ selector:
           value: "{{ .Values.deployments.userMgmt.environment.NODE_ENV }}"
         - name: GPSD_USER_MGMT_PORT
           value: "{{ .Values.deployments.userMgmt.environment.PORT }}"
-        livenessProbe:
-          httpGet:
-            path: {{ .Values.deployments.userMgmt.livenessProbe.httpGet.path }}
-            port: {{ .Values.deployments.userMgmt.port }}
-            initialDelaySeconds: {{ .Values.deployments.userMgmt.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployments.userMgmt.livenessProbe.periodSeconds }}
-        readinessProbe:
-          httpGet:
-            path: {{ .Values.deployments.userMgmt.readinessProbe.httpGet.path }}
-            port: {{ .Values.deployments.userMgmt.port }}
-            initialDelaySeconds: {{ .Values.deployments.userMgmt.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.deployments.userMgmt.readinessProbe.periodSeconds }}
+      livenessProbe:
+        httpGet:
+          path: {{ .Values.deployments.userMgmt.livenessProbe.httpGet.path }}
+          port: {{ .Values.deployments.userMgmt.port }}
+          initialDelaySeconds: {{ .Values.deployments.userMgmt.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployments.userMgmt.livenessProbe.periodSeconds }}
+      readinessProbe:
+        httpGet:
+          path: {{ .Values.deployments.userMgmt.readinessProbe.httpGet.path }}
+          port: {{ .Values.deployments.userMgmt.port }}
+          initialDelaySeconds: {{ .Values.deployments.userMgmt.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployments.userMgmt.readinessProbe.periodSeconds }}
