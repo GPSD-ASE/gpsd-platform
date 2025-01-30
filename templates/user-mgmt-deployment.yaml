@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gpsd-user-mgmt
-  namespace: gpsd
+  name: {{ .Values.deployments.userMgmt.name | default "gpsd-user-mgmt" }}
+  namespace: {{ .Values.global.namespace }}
   labels:
-    app: gpsd-user-mgmt
+    app: {{ .Values.deployments.userMgmt.name }}
 spec:
-  replicas: 1
-  selector:
+  replicas: {{ .Values.deployments.userMgmt.replicas }}
+selector:
     matchLabels:
       app: gpsd-user-mgmt
   template:
@@ -17,25 +17,24 @@ spec:
     spec:
       containers:
       - name: gpsd-user-mgmt
-        image: gpsd/gpsd-user-mgmt:v1
-        imagePullPolicy: Always
+        image: "{{ .Values.deployments.userMgmt.image.repository }}:{{ .Values.deployments.userMgmt.image.tag }}"
+        imagePullPolicy: {{ .Values.deployments.userMgmt.image.pullPolicy }}
         ports:
-        - containerPort: 5500
+        - containerPort: {{ .Values.deployments.userMgmt.port }}
         env:
         - name: NODE_ENV
-          value: "staging"
+          value: "{{ .Values.deployments.userMgmt.environment.NODE_ENV }}"
         - name: GPSD_USER_MGMT_PORT
-          value: "5500"
+          value: "{{ .Values.deployments.userMgmt.environment.PORT }}"
         livenessProbe:
           httpGet:
-            path: /api/user/health
-            port: 5500
-          initialDelaySeconds: 3
-          periodSeconds: 10
+            path: {{ .Values.deployments.userMgmt.livenessProbe.httpGet.path }}
+            port: {{ .Values.deployments.userMgmt.port }}
+            initialDelaySeconds: {{ .Values.deployments.userMgmt.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployments.userMgmt.livenessProbe.periodSeconds }}
         readinessProbe:
           httpGet:
-            path: /api/user/health
-            port: 5500
-          initialDelaySeconds: 3
-          periodSeconds: 10
-
+            path: {{ .Values.deployments.userMgmt.readinessProbe.httpGet.path }}
+            port: {{ .Values.deployments.userMgmt.port }}
+            initialDelaySeconds: {{ .Values.deployments.userMgmt.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployments.userMgmt.readinessProbe.periodSeconds }}

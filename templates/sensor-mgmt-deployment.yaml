@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gpsd-sensor-mgmt
-  namespace: gpsd
+  name: {{ .Values.deployments.sensorMgmt.name | default "gpsd-sensor-mgmt" }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: gpsd-sensor-mgmt
 spec:
-  replicas: 1
+  replicas: {{ .Values.deployments.sensorMgmt.replicas }}
   selector:
     matchLabels:
       app: gpsd-sensor-mgmt
@@ -17,25 +17,24 @@ spec:
     spec:
       containers:
       - name: gpsd-sensor-mgmt
-        image: gpsd/gpsd-sensor-mgmt:v1
-        imagePullPolicy: Always
+        image: "{{ .Values.deployments.sensorMgmt.image.repository }}:{{ .Values.deployments.sensorMgmt.image.tag }}"
+        imagePullPolicy: {{ .Values.deployments.sensorMgmt.image.pullPolicy }}
         ports:
-        - containerPort: 6000
+        - containerPort: {{ .Values.deployments.sensorMgmt.port }}
         env:
         - name: NODE_ENV
-          value: "staging"
+          value: "{{ .Values.deployments.sensorMgmt.environment.NODE_ENV }}"
         - name: GPSD_SENSOR_MGMT_PORT
-          value: "6000"
+          value: "{{ .Values.deployments.sensorMgmt.environment.PORT }}"
         livenessProbe:
           httpGet:
-            path: /api/sensor/health
-            port: 6000
-          initialDelaySeconds: 3
-          periodSeconds: 10
+            path: {{ .Values.deployments.sensorMgmt.livenessProbe.httpGet.path }}
+            port: {{ .Values.deployments.sensorMgmt.port }}
+            initialDelaySeconds: {{ .Values.deployments.sensorMgmt.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployments.sensorMgmt.livenessProbe.periodSeconds }}
         readinessProbe:
           httpGet:
-            path: /api/sensor/health
-            port: 6000
-          initialDelaySeconds: 3
-          periodSeconds: 10
-
+            path: {{ .Values.deployments.sensorMgmt.readinessProbe.httpGet.path }}
+            port: {{ .Values.deployments.sensorMgmt.port }}
+            initialDelaySeconds: {{ .Values.deployments.sensorMgmt.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployments.sensorMgmt.readinessProbe.periodSeconds }}

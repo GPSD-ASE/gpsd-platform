@@ -30,13 +30,13 @@ spec:
           httpGet:
             path: {{ .Values.deployments.evacMgmt.livenessProbe.httpGet.path }}
             port: {{ .Values.deployments.evacMgmt.port }}
-          initialDelaySeconds: {{ .Values.deployments.evacMgmt.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.deployments.evacMgmt.livenessProbe.periodSeconds }}
+            initialDelaySeconds: {{ .Values.deployments.evacMgmt.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.deployments.evacMgmt.livenessProbe.periodSeconds }}
         readinessProbe:
           httpGet:
             path: {{ .Values.deployments.evacMgmt.readinessProbe.httpGet.path }}
             port: {{ .Values.deployments.evacMgmt.port }}
           initialDelaySeconds: {{ .Values.deployments.evacMgmt.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.deployments.evacMgmt.readinessProbe.periodSeconds }}
-    
+
 
