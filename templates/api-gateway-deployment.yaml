@@ -21,6 +21,11 @@ spec:
         imagePullPolicy: {{ .Values.deployments.apiGateway.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.deployments.apiGateway.port }}
+          name: https
+        volumeMounts:
+          - name: certs
+            mountPath: /etc/ssl/certs
+            readOnly: true
         env:
         - name: NODE_ENV
           value: "{{ .Values.deployments.apiGateway.environment.NODE_ENV }}"
@@ -36,6 +41,10 @@ spec:
             secretKeyRef:
               name: {{ .Values.deployments.apiGateway.environment.secrets.REFRESH_SECRET }}
               key: "REFRESH_SECRET"
+      volumes:
+        - name: certs
+          secret:
+            secretName: gpsd-api-gateway-certificates
       livenessProbe:
         httpGet:
           path: {{ .Values.deployments.apiGateway.livenessProbe.httpGet.path }}

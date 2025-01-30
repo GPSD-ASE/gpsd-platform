@@ -37,9 +37,4 @@ spec:
             name: {{ .Values.deployments.nginx.volumes.configMapName }}
         - name: certs
           secret:
-            secretName: {{ .Values.deployments.nginx.volumes.certsSecretName }}
-            items:
-            {{- range .Values.deployments.nginx.volumes.certs }}
-              - key: {{ .key }}
-                path: {{ .path }}
-            {{- end }}
+            secretName: gpsd-nginx-certificates
