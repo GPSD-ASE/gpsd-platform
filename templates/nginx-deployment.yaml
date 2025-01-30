@@ -20,9 +20,10 @@ spec:
         image: "{{ .Values.deployments.nginx.image.repository }}:{{ .Values.deployments.nginx.image.tag }}"
         imagePullPolicy: {{ .Values.deployments.nginx.image.pullPolicy }}
         ports:
-        {{- range .Values.deployments.nginx.ports }}
-        - containerPort: {{ .port }}
-        {{- end }}
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
         volumeMounts:
         - name: nginx-config
           mountPath: /etc/nginx/nginx.conf
