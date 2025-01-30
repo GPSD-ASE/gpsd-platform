@@ -15,11 +15,11 @@ deployments:
   nginx:
     replicas: 1
     image:
-      repository: paranjik/gpsd-nginx
+      repository: gpsd/gpsd-nginx
       tag: latest
       pullPolicy: Always
     environment:
-      NODE_ENV: "staging"
+      ENV: "staging"
     volumes:
       configMapName: gpsd-nginx-config
       certsSecretName: gpsd-api-gateway-certificates
@@ -35,7 +35,7 @@ deployments:
   apiGateway:
     replicas: 1
     image:
-      repository: paranjik/gpsd-api-gateway
+      repository: gpsd/gpsd-api-gateway
       tag: latest
       pullPolicy: Always
     port: 3000
@@ -198,9 +198,9 @@ services:
     name: gpsd-api-gateway
     type: NodePort
     ports:
-      - name: http
+      - name: https
         protocol: TCP
-        port: 80
+        port: 443
         targetPort: 3000
         nodePort: 30001
     selector:
