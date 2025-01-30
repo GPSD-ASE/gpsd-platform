@@ -41,6 +41,9 @@ deployments:
       secrets:
         JWT_SECRET: gpsd-api-gateway-secrets
         REFRESH_SECRET: gpsd-api-gateway-secrets
+        keys:
+          JWT_SECRET: jwt-secret-key
+          REFRESH_SECRET: refresh-secret-key
     livenessProbe:
       httpGet:
         path: /api/gateway/health
@@ -273,10 +276,10 @@ podAnnotations: {}
 
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
   fsGroup: 2000
 
-securityContext: {}
+securityContext:
   capabilities:
     drop:
     - ALL
@@ -300,22 +303,6 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
-  limits:
-    cpu: 100m
-    memory: 128Mi
-  requests:
-    cpu: 100m
-    memory: 128Mi
-
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
 
 autoscaling:
   enabled: true

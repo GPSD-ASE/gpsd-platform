@@ -10,6 +10,11 @@ spec:
   containers:
     - name: wget
       image: busybox
-      command: ['wget']
-      args: ['{{ include "gpsd.fullname" . }}:{{ .Values.service.port }}']
+      command: ['sh', '-c']
+      args:
+        - >
+          for service in {{ range $name, $service := .Values.services }}
+          {{ $service.name }}; do
+          wget -qO- http://$service.name:{{ (index $service.ports 0).port }} || exit 1;
+          done;
   restartPolicy: Never
