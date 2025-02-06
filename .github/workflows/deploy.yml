@@ -23,7 +23,7 @@ jobs:
 
       - name: Add Remote Server to Known Hosts
         run: |
-          ssh-keyscan -H remote-server >> ~/.ssh/known_hosts
+          ssh-keyscan -H v2202501253104311605.luckysrv.de >> ~/.ssh/known_hosts
 
       - name: Run Commands on Remote Server
         run: |
