@@ -1,0 +1,8 @@
+images:
+  gpsd-api-gateway: v1
+  gspd-map-mgmt-svc: v1
+  gpsd-sensor-mgmt-svc: v1
+  gpsd-user-mgmt-svc: v1
+  gpsd-incident-mgmt-svc: v1
+  gpsd-evac-mgmt-svc: v1
+  # gpsd-notif-mgmt-svc: v1

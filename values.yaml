@@ -12,26 +12,6 @@ global:
   fullnameOverride: ""
 
 deployments:
-  nginx:
-    replicas: 1
-    image:
-      repository: gpsd/gpsd-nginx
-      tag: latest
-      pullPolicy: Always
-    environment:
-      ENV: "staging"
-    volumes:
-      configMapName: gpsd-nginx-config
-      certsSecretName: gpsd-api-gateway-certificates
-      certs:
-        - key: tls.crt
-          path: api.gpsd.com.crt
-        - key: tls.key
-          path: api.gpsd.com.key
-    ports:
-      - port: 80
-      - port: 443
-
   apiGateway:
     replicas: 1
     image:
@@ -206,21 +186,6 @@ services:
     selector:
       app: gpsd-api-gateway
 
-  nginx:
-    name: gpsd-nginx
-    type: ClusterIP
-    ports:
-      - name: http
-        protocol: TCP
-        port: 80
-        targetPort: 80
-      - name: https
-        protocol: TCP
-        port: 443
-        targetPort: 443
-    selector:
-      app: gpsd-nginx
-
   mapMgmt:
     name: gpsd-map-mgmt
     type: NodePort
@@ -318,9 +283,6 @@ ingress:
   #      - chart-example.local
 
 certificates:
-  nginx:
-    certFile: "private/certs/api.gpsd.com.crt"
-    keyFile: "private/certs/api.gpsd.com.key"
   apiGateway:
     certFile: "private/certs/api.gpsd.gateway.com.crt"
     keyFile: "private/certs/api.gpsd.gateway.com.key"
