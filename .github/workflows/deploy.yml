@@ -1,0 +1,30 @@
+name: Deploy to Netcup Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$REMOTE_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+        env:
+          REMOTE_SSH_KEY: ${{ secrets.NETCUP_SSH_PRIVATE_KEY }}
+
+      - name: Add Remote Server to Known Hosts
+        run: |
+          ssh-keyscan -H remote-server >> ~/.ssh/known_hosts
+
+      - name: Run Commands on Remote Server
+        run: |
+          ssh root@v2202501253104311605.luckysrv.de "echo 'Hello from GitHub Actions!' && uptime"
