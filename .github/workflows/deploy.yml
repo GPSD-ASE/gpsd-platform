@@ -25,6 +25,9 @@ jobs:
         run: |
           ssh-keyscan -H v2202501253104311605.luckysrv.de >> ~/.ssh/known_hosts
 
-      - name: Run Commands on Remote Server
+      - name: Copy helm tar to the Netcup Server
         run: |
-          ssh root@v2202501253104311605.luckysrv.de "echo 'Hello from GitHub Actions!' && uptime"
+            rsync -avz \
+            --include="*.tgz" \
+            --exclude="*" \
+            ./ root@v2202501253104311605.luckysrv.de:/srv/shared/
