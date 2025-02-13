@@ -48,11 +48,6 @@ jobs:
       - name: Transfer Helm Chart to Server
         run: |
           scp *.tgz root@v2202501253104311605.luckysrv.de:/srv/shared
-      
-      - name: Setup k3s Config
-        run: |
-          export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-          kubectl get nodes
 
 
       - name: Deploy Helm Chart on Server
