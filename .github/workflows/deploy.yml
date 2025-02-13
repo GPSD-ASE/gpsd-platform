@@ -47,13 +47,22 @@ jobs:
         run: |
           scp *.tgz root@v2202501253104311605.luckysrv.de:/srv/shared
       
-      - name: Setup Kubernetes Config
-        run: |
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > ~/.kube/config
-          chmod 600 ~/.kube/config
-        
+          - name: Setup Kubernetes Config
+          run: |
+            mkdir -p ~/.kube  # 🔹 Ensure ~/.kube folder exists
+            echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > ~/.kube/config
+            chmod 600 ~/.kube/config
+            export KUBECONFIG=~/.kube/config  # 🔹 Set KUBECONFIG explicitly
+  
       - name: Verify Kubernetes Connection
-        run: kubectl cluster-info
+        run: |
+          if [ -f ~/.kube/config ]; then
+            echo "Kubeconfig exists ✅"
+          else
+            echo "Kubeconfig NOT FOUND ❌"
+            exit 1
+          fi
+          kubectl cluster-info
 
       - name: Deploy Helm Chart on Server
         run: |
