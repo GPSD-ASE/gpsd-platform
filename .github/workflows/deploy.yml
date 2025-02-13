@@ -15,6 +15,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Setup Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          helm version
+
+      - name: Change to the correct directory
+        run: cd ${{ github.workspace }}
+
+      - name: Package Helm Chart
+        run: |
+          helm package .
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
@@ -23,13 +35,19 @@ jobs:
         env:
           REMOTE_SSH_KEY: ${{ secrets.NETCUP_SSH_PRIVATE_KEY }}
 
-      - name: Add Remote Server to Known Hosts
+      - name: Remove existing Helm Chart on Server
         run: |
-          ssh-keyscan -H v2202501253104311605.luckysrv.de >> ~/.ssh/known_hosts
+          ssh root@v2202501253104311605.luckysrv.de << 'EOF'
+            rm -rf /srv/shared/*.tgz
+          EOF
 
-      - name: Copy helm tar to the Netcup Server
+      - name: Transfer Helm Chart to Server
         run: |
-            rsync -avz \
-            --include="*.tgz" \
-            --exclude="*" \
-            ./ root@v2202501253104311605.luckysrv.de:/srv/shared/
+          scp *.tgz root@v2202501253104311605.luckysrv.de:/srv/shared
+
+      - name: Deploy Helm Chart on Server
+        run: |
+          ssh root@v2202501253104311605.luckysrv.de << 'EOF'
+            helm upgrade --install gpsd /srv/shared/*.tgz \
+            --namespace gpsd
+          EOF
