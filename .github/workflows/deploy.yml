@@ -55,4 +55,5 @@ jobs:
           ssh root@v2202501253104311605.luckysrv.de << 'EOF'
             helm upgrade --install gpsd /srv/shared/*.tgz \
             --namespace gpsd
+            kubectl get pods -n gpsd
           EOF
