@@ -47,12 +47,12 @@ jobs:
         run: |
           scp *.tgz root@v2202501253104311605.luckysrv.de:/srv/shared
       
-          - name: Setup Kubernetes Config
-          run: |
-            mkdir -p ~/.kube  # 🔹 Ensure ~/.kube folder exists
-            echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > ~/.kube/config
-            chmod 600 ~/.kube/config
-            export KUBECONFIG=~/.kube/config  # 🔹 Set KUBECONFIG explicitly
+      - name: Setup Kubernetes Config
+        run: |
+          mkdir -p ~/.kube  # 🔹 Ensure ~/.kube folder exists
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > ~/.kube/config
+          chmod 600 ~/.kube/config
+          export KUBECONFIG=~/.kube/config  # 🔹 Set KUBECONFIG explicitly
   
       - name: Verify Kubernetes Connection
         run: |
