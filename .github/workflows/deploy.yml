@@ -32,6 +32,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "$REMOTE_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.NETCUP_SSH_SERVER_IP }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
         env:
           REMOTE_SSH_KEY: ${{ secrets.NETCUP_SSH_PRIVATE_KEY }}
 
