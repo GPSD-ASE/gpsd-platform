@@ -9,6 +9,10 @@ on:
 jobs:
   update-helm-values:
     runs-on: ubuntu-latest
+    permissions:
+        contents: write
+
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -44,11 +48,10 @@ jobs:
           done
 
       - name: Commit and Push Changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           git add values.yaml
           git commit -m "Updated Helm values.yaml with new image tags" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/GPSD-ASE/gpsd-helm-stage.git
+          git push origin main
