@@ -10,13 +10,12 @@ global:
   nameOverride: ""
   fullName: gpsd
   fullnameOverride: ""
-
 deployments:
   apiGateway:
     replicas: 1
     image:
       repository: gpsd/gpsd-api-gateway
-      tag: latest
+      tag: v1
       pullPolicy: Always
     port: 3000
     environment:
@@ -40,7 +39,6 @@ deployments:
         port: 3000
       initialDelaySeconds: 3
       periodSeconds: 10
-
   mapMgmt:
     replicas: 1
     image:
@@ -63,7 +61,6 @@ deployments:
         port: 7000
       initialDelaySeconds: 3
       periodSeconds: 10
-
   evacMgmt:
     replicas: 1
     image:
@@ -86,7 +83,6 @@ deployments:
         port: 8000
       initialDelaySeconds: 3
       periodSeconds: 10
-
   incidentMgmt:
     replicas: 1
     image:
@@ -109,7 +105,6 @@ deployments:
         port: 9000
       initialDelaySeconds: 3
       periodSeconds: 10
-
   sensorMgmt:
     replicas: 1
     image:
@@ -132,12 +127,11 @@ deployments:
         port: 6000
       initialDelaySeconds: 3
       periodSeconds: 10
-
   userMgmt:
     replicas: 1
     image:
       repository: gpsd/gpsd-user-mgmt
-      tag: v1
+      tag: v0.0.11
       pullPolicy: Always
     port: 5500
     environment:
@@ -155,23 +149,21 @@ deployments:
         port: 5500
       initialDelaySeconds: 3
       periodSeconds: 10
-
-  # notificationMgmt:
-  #   replicas: 1
-  #   image:
-  #     repository: gpsd/gpsd-notif-mgmt
-  #     tag: v1
-  #     pullPolicy: Always
-  #   environment:
-  #     NODE_ENV: "staging"
-  #     PORT: 5400
-
-  # redisServer:
-  #   replicas: 1
-  #   image:
-  #     repository: redis
-  #     tag: latest
-  #     pullPolicy: Always
+      # notificationMgmt:
+      #   replicas: 1
+      #   image:
+      #     repository: gpsd/gpsd-notif-mgmt
+      #     tag: v1
+      #     pullPolicy: Always
+      #   environment:
+      #     NODE_ENV: "staging"
+      #     PORT: 5400
+# redisServer:
+#   replicas: 1
+#   image:
+#     repository: redis
+#     tag: latest
+#     pullPolicy: Always
 
 services:
   apiGateway:
@@ -185,7 +177,6 @@ services:
         nodePort: 30001
     selector:
       app: gpsd-api-gateway
-
   mapMgmt:
     name: gpsd-map-mgmt
     type: NodePort
@@ -197,7 +188,6 @@ services:
         nodePort: 30070
     selector:
       app: gpsd-map-mgmt
-
   userMgmt:
     name: gpsd-user-mgmt
     type: NodePort
@@ -209,7 +199,6 @@ services:
         nodePort: 30055
     selector:
       app: gpsd-user-mgmt
-
   sensorMgmt:
     name: gpsd-sensor-mgmt
     type: NodePort
@@ -221,7 +210,6 @@ services:
         nodePort: 30060
     selector:
       app: gpsd-sensor-mgmt
-
   evacMgmt:
     name: gpsd-evac-mgmt
     type: NodePort
@@ -233,7 +221,6 @@ services:
         nodePort: 30010
     selector:
       app: gpsd-evac-mgmt
-
   incidentMgmt:
     name: gpsd-incident-mgmt
     type: NodePort
@@ -245,33 +232,27 @@ services:
         nodePort: 30090
     selector:
       app: gpsd-incident-mgmt
-
 serviceAccount:
   create: true
   name: ""
   annotations: {}
-
 podAnnotations: {}
-
 podLabels: {}
-
 podSecurityContext:
   fsGroup: 2000
-
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1000
-
 ingress:
   enabled: false
   className: ""
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
@@ -281,19 +262,16 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
 certificates:
   apiGateway:
     certFile: "private/certs/api.gpsd.gateway.com.crt"
     keyFile: "private/certs/api.gpsd.gateway.com.key"
-
 autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 70
   # targetMemoryUtilizationPercentage: 80
-
 volumes: []
 # - name: foo
 #   secret:
@@ -306,7 +284,5 @@ volumeMounts: []
 #   readOnly: true
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
