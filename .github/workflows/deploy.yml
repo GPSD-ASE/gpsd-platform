@@ -1,12 +1,13 @@
 name: Deploy to Netcup Server
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Update Helm Values from Manifest"]
+    types:
+      - completed
 
 jobs:
-  deploy:
+  followup:
     runs-on: ubuntu-latest
 
     steps:
