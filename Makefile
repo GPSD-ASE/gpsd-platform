@@ -1,5 +1,6 @@
 # Helm Namespace
 NAMESPACE=gpsd
+FOLDER_NAME=gpsd-platform
 CHART_NAME=gpsd-platform
 INPUT_MANIFEST=input-manifest.yaml
 
@@ -34,8 +35,11 @@ delete:
 list:
 	helm list --namespace $(NAMESPACE)
 
-# Update all the services (e.g., after modifying values.yaml or versions)
 update:
+	helm upgrade $(CHART_NAME) ./$(FOLDER_NAME) --namespace $(NAMESPACE)
+
+# Update all the services (e.g., after modifying values.yaml or versions)
+update-all:
 	$(foreach service, $(SERVICES), \
 		helm upgrade $(service) ./charts/$(service) --namespace $(NAMESPACE) --set image.tag=$(shell yq eval ".services.$(service)" $(INPUT_MANIFEST)) \
 	)
