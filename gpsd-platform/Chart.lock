@@ -1,0 +1,9 @@
+dependencies:
+- name: gpsd-api-gateway
+  repository: https://gpsd-ase.github.io/gpsd-api-gateway/
+  version: 0.1.0
+- name: gpsd-user-mgmt
+  repository: https://gpsd-ase.github.io/gpsd-user-mgmt/
+  version: 0.1.0
+digest: sha256:f1fc787f10081b1434e9a04f61b46ddc7b77b9419489fe6d127ca91ab0db126d
+generated: "2025-02-21T01:36:06.612842696+01:00"
