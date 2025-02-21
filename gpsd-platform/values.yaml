@@ -1,7 +1,0 @@
-namespace: gpsd
-
-gpsd-api-gateway:
-  replicaCount: 1
-
-gpsd-user-mgmt:
-  replicaCount: 1
