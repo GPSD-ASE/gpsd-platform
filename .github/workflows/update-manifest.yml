@@ -33,11 +33,9 @@ jobs:
             # Convert input-manifest service names to Helm values.yaml format
             case "$service" in
               gpsd-api-gateway)       key="apiGateway";;
-              gpsd-map-mgmt-svc)      key="mapMgmt";;
-              gpsd-sensor-mgmt-svc)   key="sensorMgmt";;
-              gpsd-user-mgmt-svc)     key="userMgmt";;
-              gpsd-incident-mgmt-svc) key="incidentMgmt";;
-              gpsd-evac-mgmt-svc)     key="evacMgmt";;
+              gpsd-map-mgmt)          key="mapMgmt";;
+              gpsd-user-mgmt)         key="userMgmt";;
+              gpsd-incident-mgmt)     key="incidentMgmt";;
               *) echo "Unknown service: $service"; continue;;
             esac
             
