@@ -5,3 +5,6 @@ gpsd-api-gateway:
 
 gpsd-user-mgmt:
   replicaCount: 1
+
+gpsd-map-mgmt:
+  replicaCount: 1

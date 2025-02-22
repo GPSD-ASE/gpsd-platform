@@ -1,5 +1,5 @@
 services:
   gpsd-api-gateway: latest
-  gpsd-map-mgmt: v0.0.1
+  gpsd-map-mgmt: latest
   gpsd-user-mgmt-svc: latest
-  gpsd-incident-mgmt-svc: v0.0.1
+  gpsd-incident-mgmt-svc: latest

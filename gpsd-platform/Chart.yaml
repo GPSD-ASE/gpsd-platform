@@ -9,3 +9,6 @@ dependencies:
   - name: gpsd-user-mgmt
     version: 0.1.0
     repository: "https://gpsd-ase.github.io/gpsd-user-mgmt/"
+    - name: gpsd-map-mgmt
+    version: 0.1.0
+    repository: "https://gpsd-ase.github.io/gpsd-map-mgmt/"
