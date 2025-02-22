@@ -5,5 +5,8 @@ dependencies:
 - name: gpsd-user-mgmt
   repository: https://gpsd-ase.github.io/gpsd-user-mgmt/
   version: 0.1.0
-digest: sha256:f1fc787f10081b1434e9a04f61b46ddc7b77b9419489fe6d127ca91ab0db126d
-generated: "2025-02-21T01:36:06.612842696+01:00"
+- name: gpsd-map-mgmt
+  repository: https://gpsd-ase.github.io/gpsd-map-mgmt/
+  version: 0.1.0
+digest: sha256:77d64c9f0ee9b63e1d62f043681fbc26258799869486ca257a643d51ec497624
+generated: "2025-02-22T12:56:59.550852327+01:00"
