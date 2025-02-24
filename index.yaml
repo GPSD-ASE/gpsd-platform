@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   gpsd-platform:
   - apiVersion: v2
-    created: "2025-02-24T13:58:25.200035Z"
+    created: "2025-02-24T14:13:15.17048Z"
     dependencies:
     - name: gpsd-api-gateway
       repository: https://gpsd-ase.github.io/gpsd-api-gateway/
@@ -14,9 +14,9 @@ entries:
       repository: https://gpsd-ase.github.io/gpsd-map-mgmt/
       version: 0.1.0
     description: A Helm chart for deploying GPSD service
-    digest: 0a5ede01d301d99b9ac15a76c85e485da7b8cfddea3bcf14946816772b7e93e5
+    digest: 06875ee4c1f82240a26bab89e6fc53825fa7497a583e84953f5293eee23d53b3
     name: gpsd-platform
     urls:
     - https://gpsd-ase.github.io/gpsd-platform/gpsd-platform-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-24T13:58:25.199043Z"
+generated: "2025-02-24T14:13:15.169968Z"
