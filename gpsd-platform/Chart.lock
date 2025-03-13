@@ -8,5 +8,8 @@ dependencies:
 - name: gpsd-map-mgmt
   repository: https://gpsd-ase.github.io/gpsd-map-mgmt/
   version: 0.1.0
-digest: sha256:77d64c9f0ee9b63e1d62f043681fbc26258799869486ca257a643d51ec497624
-generated: "2025-02-22T12:56:59.550852327+01:00"
+- name: gpsd-vfy-engine
+  repository: https://gpsd-ase.github.io/gpsd-vfy-engine/
+  version: 0.1.0
+digest: sha256:c6a5a508a7ba2387de764c561e43d2dcbb6840f9404c320fd756c6508df67b7d
+generated: "2025-03-13T16:04:15.16951Z"
