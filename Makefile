@@ -9,19 +9,23 @@ REMOTE_CHART_REPOSITORY = gpsd-ase.github.io
 SERVICES=$(shell yq eval '.services | keys | .[]' $(INPUT_MANIFEST))
 VERSIONS=$(shell yq eval '.services | to_entries | map("\(.key)=\(.value)") | .[]' $(INPUT_MANIFEST))
 
-# Define per-service installation
-define install_helm_chart
-	helm upgrade --install $(1) ./charts/$(1) --namespace $(NAMESPACE) --set image.tag=$(2)
-endef
-
 # Create a new chart for the parent platform
 create:
 	helm create $(CHART_NAME)
 
-# Deploy all services dynamically
+# Deploy all services dynamically based on input-manifest.yaml
 install:
+	@echo "Installing services with versions from $(INPUT_MANIFEST)..."
+	@for service in $(SERVICES); do \
+		version=$$(yq eval ".services.$$service" $(INPUT_MANIFEST)); \
+		echo "Installing $$service with version $$version"; \
+		helm upgrade --install $$service ./charts/$$service --namespace $(NAMESPACE) --set image.tag=$$version; \
+	done
+
+# Alternative install using Make's foreach function
+install-alt:
 	$(foreach service, $(SERVICES), \
-		$(call install_helm_chart,$(service),$(shell yq eval ".services.$(service)" $(INPUT_MANIFEST))) \
+		helm upgrade --install $(service) ./charts/$(service) --namespace $(NAMESPACE) --set image.tag=$(shell yq eval ".services.$(service)" $(INPUT_MANIFEST)) ; \
 	)
 
 # Rollback a specific service to the previous release
