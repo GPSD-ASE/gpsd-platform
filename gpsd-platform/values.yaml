@@ -9,5 +9,8 @@ gpsd-user-mgmt:
 gpsd-map-mgmt:
   replicaCount: 1
 
+gpsd-vfy-engine:
+  replicaCount: 1
+
 serviceAccount:
   create: false
