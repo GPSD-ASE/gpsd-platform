@@ -12,5 +12,8 @@ gpsd-map-mgmt:
 gpsd-vfy-engine:
   replicaCount: 1
 
+gpsd-incident-mgmt:
+  replicaCount: 1
+
 serviceAccount:
   create: false
