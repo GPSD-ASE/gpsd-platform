@@ -4,12 +4,15 @@ dependencies:
   version: 0.1.1
 - name: gpsd-user-mgmt
   repository: https://gpsd-ase.github.io/gpsd-user-mgmt/
-  version: 0.1.1
+  version: 0.1.2
 - name: gpsd-map-mgmt
   repository: https://gpsd-ase.github.io/gpsd-map-mgmt/
   version: 0.0.15
 - name: gpsd-vfy-engine
   repository: https://gpsd-ase.github.io/gpsd-vfy-engine/
   version: 0.1.0
-digest: sha256:e7bc153b992ff9521c5d982e25aeccb2f69d7314e46ac3f5681f36c0106cd971
-generated: "2025-03-21T21:01:43.868442214+01:00"
+- name: gpsd-incident-mgmt
+  repository: https://gpsd-ase.github.io/gpsd-incident-mgmt/
+  version: 0.0.5
+digest: sha256:6c09e8d9702d61e06a157cd43efc6956449c66c4282ad811a2aeca9fde91dc57
+generated: "2025-03-22T00:46:24.178054928+01:00"
