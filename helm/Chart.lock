@@ -1,15 +1,15 @@
 dependencies:
 - name: gpsd-api-gateway
   repository: https://gpsd-ase.github.io/gpsd-api-gateway/
-  version: 0.1.0
+  version: 0.1.1
 - name: gpsd-user-mgmt
   repository: https://gpsd-ase.github.io/gpsd-user-mgmt/
-  version: 0.1.0
+  version: 0.1.1
 - name: gpsd-map-mgmt
   repository: https://gpsd-ase.github.io/gpsd-map-mgmt/
   version: 0.0.15
 - name: gpsd-vfy-engine
   repository: https://gpsd-ase.github.io/gpsd-vfy-engine/
   version: 0.1.0
-digest: sha256:c25a1a7872bd6ff9555b58a60cbe84f0e06b4d966fa1699254d2fda2b744cdcf
-generated: "2025-03-20T19:09:06.899697937+01:00"
+digest: sha256:e7bc153b992ff9521c5d982e25aeccb2f69d7314e46ac3f5681f36c0106cd971
+generated: "2025-03-21T21:01:43.868442214+01:00"
