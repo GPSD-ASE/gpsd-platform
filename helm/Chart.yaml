@@ -14,4 +14,7 @@ dependencies:
     repository: "https://gpsd-ase.github.io/gpsd-map-mgmt/"
   - name: gpsd-vfy-engine
     version: 0.1.0
-    repository: "https://gpsd-ase.github.io/gpsd-vfy-engine/"
+    repository: "https://gpsd-ase.github.io/gpsd-vfy-engine/"  
+  - name: gpsd-incident-engine
+    version: 0.0.3
+    repository: "https://gpsd-ase.github.io/gpsd-incident-engine/"
