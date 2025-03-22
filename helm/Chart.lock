@@ -1,7 +1,7 @@
 dependencies:
 - name: gpsd-api-gateway
   repository: https://gpsd-ase.github.io/gpsd-api-gateway/
-  version: 0.1.1
+  version: 0.1.2
 - name: gpsd-user-mgmt
   repository: https://gpsd-ase.github.io/gpsd-user-mgmt/
   version: 0.1.2
@@ -14,5 +14,5 @@ dependencies:
 - name: gpsd-incident-mgmt
   repository: https://gpsd-ase.github.io/gpsd-incident-mgmt/
   version: 0.0.5
-digest: sha256:6c09e8d9702d61e06a157cd43efc6956449c66c4282ad811a2aeca9fde91dc57
-generated: "2025-03-22T00:46:24.178054928+01:00"
+digest: sha256:f831085ee68e86484d7c6b569c92344f35ecd6b174fbd4c81b560631b6f99829
+generated: "2025-03-22T01:13:28.366157207+01:00"
