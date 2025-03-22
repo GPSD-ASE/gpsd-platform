@@ -10,7 +10,7 @@ dependencies:
     version: 0.1.2
     repository: "https://gpsd-ase.github.io/gpsd-user-mgmt/"
   - name: gpsd-map-mgmt
-    version: 0.0.15
+    version: 0.0.16
     repository: "https://gpsd-ase.github.io/gpsd-map-mgmt/"
   - name: gpsd-vfy-engine
     version: 0.1.0
