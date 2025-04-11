@@ -61,3 +61,8 @@ gh-pages-publish:
 	git push origin gh-pages -f
 	sleep 2
 	curl -k https://$(REMOTE_CHART_REPOSITORY)/$(FOLDER_NAME)/index.yaml
+
+update:
+	bash scripts/uninstall_gpsd_platform.sh || true
+	helm dependency update ./helm
+	helm upgrade --install demo ./helm -n gpsd

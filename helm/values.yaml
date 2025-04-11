@@ -9,7 +9,7 @@ gpsd-user-mgmt:
 gpsd-map-mgmt:
   replicaCount: 1
 
-gpsd-vfy-engine:
+gpsd-escalation-mgmt:
   replicaCount: 1
 
 gpsd-incident-mgmt:

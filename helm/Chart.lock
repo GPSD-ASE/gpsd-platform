@@ -11,5 +11,8 @@ dependencies:
 - name: gpsd-incident-mgmt
   repository: https://gpsd-ase.github.io/gpsd-incident-mgmt/
   version: 0.0.7
-digest: sha256:72ca24bcedd64f2feb32e7aa6a697fd55e7ebc6a05aa3b9e75fe4ba203432b48
-generated: "2025-04-10T12:44:07.707749585+02:00"
+- name: gpsd-escalation-mgmt
+  repository: https://gpsd-ase.github.io/gpsd-escalation-mgmt/
+  version: 0.0.2
+digest: sha256:3f37a1090dd2be0b8ff357531a2027537cdc7692347238e4ee8e766d41a8f146
+generated: "2025-04-11T13:58:18.597285349+02:00"
