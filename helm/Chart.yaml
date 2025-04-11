@@ -4,17 +4,14 @@ description: A Helm chart for deploying GPSD service
 version: 0.1.0
 dependencies:
   - name: gpsd-api-gateway
-    version: 0.1.23
+    version: 0.1.30
     repository: "https://gpsd-ase.github.io/gpsd-api-gateway/"
   - name: gpsd-user-mgmt
-    version: 0.1.2
+    version: 0.1.10
     repository: "https://gpsd-ase.github.io/gpsd-user-mgmt/"
   - name: gpsd-map-mgmt
-    version: 0.0.16
+    version: 0.0.19
     repository: "https://gpsd-ase.github.io/gpsd-map-mgmt/"
-  - name: gpsd-vfy-engine
-    version: 0.1.0
-    repository: "https://gpsd-ase.github.io/gpsd-vfy-engine/"  
   - name: gpsd-incident-mgmt
-    version: 0.0.5
+    version: 0.0.7
     repository: "https://gpsd-ase.github.io/gpsd-incident-mgmt/"
