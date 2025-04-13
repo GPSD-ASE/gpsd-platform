@@ -14,5 +14,8 @@ dependencies:
 - name: gpsd-escalation-mgmt
   repository: https://gpsd-ase.github.io/gpsd-escalation-mgmt/
   version: 0.0.10
-digest: sha256:4842a0bdbb65ed624306c6b7a7f79b3bc8028b2cafc0b6356c0e13d3060cac57
-generated: "2025-04-11T21:01:10.340039042+02:00"
+- name: gpsd-resource-mapping
+  repository: https://gpsd-ase.github.io/gpsd-resource-mapping/
+  version: 0.0.2
+digest: sha256:85dc54dc4441a6878be75ba6e44958738f78e9ef353fcf3306603ed869263605
+generated: "2025-04-13T16:04:16.047271447+02:00"
